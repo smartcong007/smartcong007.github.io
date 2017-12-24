@@ -1,11 +1,319 @@
-<?xml version="1.0" encoding="utf-8"?>
-<search> 
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="smartcong007" />
+
+
+
+<meta name="description" content="concurrent包是java中专门用来处理并发的包，并发编程的基础便是对这个包下的常用api的熟练使用。由于并发场景的复杂和多样性，常常会有很多不同的并发手段。此文对常见的并发api进行梳理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA oncurrent包学习总结">
+<meta property="og:url" content="http://yoursite.com/2017/12/24/JAVA-oncurrent包学习总结/index.html">
+<meta property="og:site_name" content="smartcong007">
+<meta property="og:description" content="concurrent包是java中专门用来处理并发的包，并发编程的基础便是对这个包下的常用api的熟练使用。由于并发场景的复杂和多样性，常常会有很多不同的并发手段。此文对常见的并发api进行梳理。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://incdn1.b0.upaiyun.com/2017/09/0c0a50b428245a5dfb6c4250ba010fe0.png">
+<meta property="og:image" content="http://incdn1.b0.upaiyun.com/2017/09/a87d1272cf9d2e199a8c2522747a0651.png">
+<meta property="og:image" content="http://incdn1.b0.upaiyun.com/2017/09/411d4e8c8ae237bdd6fc22469d1c1880.png">
+<meta property="og:image" content="http://www.importnew.com/26461.html/5401760-d3f822dbc4045bb9">
+<meta property="og:updated_time" content="2017-12-24T13:39:15.346Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JAVA oncurrent包学习总结">
+<meta name="twitter:description" content="concurrent包是java中专门用来处理并发的包，并发编程的基础便是对这个包下的常用api的熟练使用。由于并发场景的复杂和多样性，常常会有很多不同的并发手段。此文对常见的并发api进行梳理。">
+<meta name="twitter:image" content="http://incdn1.b0.upaiyun.com/2017/09/0c0a50b428245a5dfb6c4250ba010fe0.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="smartcong007" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>JAVA oncurrent包学习总结 | smartcong007</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a3f5dab49b144d6"></script>
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/paprika.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">smartcong007</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/archives/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:cong99299618@hotmail.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/smartcong007" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 网易云音乐" href="http://music.163.com/#/user/home?id=104362235" title="网易云音乐"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">服务端大搞，架构中搞，前端小搞</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">smartcong007</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/paprika.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">smartcong007</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/archives/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:cong99299618@hotmail.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/smartcong007" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" href="http://music.163.com/#/user/home?id=104362235" title="网易云音乐"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-JAVA-oncurrent包学习总结" class="article article-type-post" itemscope itemprop="blogPost">
   
+    <div class="article-meta">
+      <a href="/2017/12/24/JAVA-oncurrent包学习总结/" class="article-date">
+      <time datetime="2017-12-24T09:26:03.000Z" itemprop="datePublished">2017-12-24</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
     
-    <entry>
-      <title><![CDATA[JAVA oncurrent包学习总结]]></title>
-      <url>/2017/12/24/JAVA-oncurrent%E5%8C%85%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/</url>
-      <content type="html"><![CDATA[<blockquote>
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JAVA oncurrent包学习总结
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
 <p>concurrent包是java中专门用来处理并发的包，并发编程的基础便是对这个包下的常用api的熟练使用。由于并发场景的复杂和多样性，常常会有<br>  很多不同的并发手段。此文对常见的并发api进行梳理。</p>
 </blockquote>
 <h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><p>java中有阻塞队列的各种不同实现，都是实现自BlockingQueue接口，包含：</p>
@@ -172,65 +480,235 @@
 <p><strong><em>RecursiveTask</em></strong><br>RecursiveTask 是一种会返回结果的任务。它可以将自己的工作分割为若干更小任务，并将这些子任务的执行结果合并到一个集体结果。可以有几个水平的分割和合并。以下是一个 RecursiveTask 示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class MyRecursiveTask extends RecursiveTask&lt;Long&gt;</span><br><span class="line"></span><br><span class="line">    &#123;  </span><br><span class="line">        private long workLoad = 0;  </span><br><span class="line">	    public MyRecursiveTask(long workLoad)&#123;  </span><br><span class="line">	        this.workLoad = workLoad;  </span><br><span class="line">	    &#125;  </span><br><span class="line">	    protected Long compute () &#123;  </span><br><span class="line">	        </span><br><span class="line">	        if (this.workLoad &gt; 16)&#123;  </span><br><span class="line">	            System.out.println(&quot;Splitting workLoad : &quot;  + this.workLoad);  </span><br><span class="line">	            List&lt;MyRecursiveTask&gt; subtasks =  </span><br><span class="line">	                new ArrayList&lt;MyRecursiveTask&gt; ();  </span><br><span class="line">	            subtasks.addAll(createSubtasks());  </span><br><span class="line">	            for (MyRecursiveTask subtask : subtasks) &#123;  </span><br><span class="line">	                subtask.fork();  </span><br><span class="line">	            &#125;  </span><br><span class="line">	            long result = 0;  </span><br><span class="line">	            for (MyRecursiveTask subtask : subtasks) &#123;  </span><br><span class="line">	                result += subtask.join();  </span><br><span class="line">	            &#125;  </span><br><span class="line">	            return result;  </span><br><span class="line">	        &#125; else &#123;  </span><br><span class="line">	            System.out.println(&quot;Doing workLoad myself: &quot;  + this.workLoad);  </span><br><span class="line">	            return workLoad * 3;  </span><br><span class="line">	        &#125;  </span><br><span class="line">	    &#125;  </span><br><span class="line">	    private List&lt;MyRecursiveTask&gt; createSubtasks () &#123;  </span><br><span class="line">	        List&lt;MyRecursiveTask&gt; subtasks =  </span><br><span class="line">	        new ArrayList&lt;MyRecursiveTask&gt; ();  </span><br><span class="line">	        MyRecursiveTask subtask1 = new MyRecursiveTask(this.workLoad / 2);  </span><br><span class="line">	        MyRecursiveTask subtask2 = new MyRecursiveTask(this.workLoad / 2);  </span><br><span class="line">	        subtasks.add(subtask1);  </span><br><span class="line">	        subtasks.add(subtask2);  </span><br><span class="line">	        return subtasks;  </span><br><span class="line">	    &#125;  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <p>除了有一个结果返回之外，这个示例和 RecursiveAction 的例子很像。MyRecursiveTask 类继承自 RecursiveTask<long>，这也就意味着它将返回一个 Long 类型的结果。MyRecursiveTask 示例也会将工作分割为子任务，并通过 fork() 方法对这些子任务计划执行。此外，本示例还通过调用每个子任务的 join() 方法收集它们返回的结果。子任务的结果随后被合并到一个更大的结果，并最终将其返回。对于不同级别的递归，这种子任务的结果合并可能会发生递归。</long></p>
 <p>你可以这样规划一个 RecursiveTask：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MyRecursiveTask myRecursiveTask = new MyRecursiveTask(128);  </span><br><span class="line">long mergedResult = forkJoinPool.invoke(myRecursiveTask);  </span><br><span class="line">System.out.println(&quot;mergedResult = &quot; + mergedResult);</span><br></pre></td></tr></table></figure></p>
-]]></content>
+
       
-        
-    </entry>
+    </div>
     
-    <entry>
-      <title><![CDATA[浅析zookeeper的典型应用场景]]></title>
-      <url>/2017/12/20/%E6%B5%85%E6%9E%90zookeeper%E7%9A%84%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>平时写业务不免要用到一些分布式的中间件，例如dubbo、Kafka等，它们都有一个共同点，那就是都以zookeeper作为注册中心。由此可见在zookeeper在处理分布式应用中的地位。既然如此，有必要对zookeeper进行一番学习。本人初学zookeeper，刚好看了zookeeper的一些典型应用场景，所以就在此利用zookeeper的java api简单地实现一番。当然要声明的是在zk的正式应用中远比这些demo要做的复杂、考虑的全面的多。但是就像标题所写，这里是“浅析”，这些demo至少能够在凸显原理的基础上具有“浅析”之用。</p>
-</blockquote>
-<h3 id="基于java的zookeeper相关的api"><a href="#基于java的zookeeper相关的api" class="headerlink" title="基于java的zookeeper相关的api"></a>基于java的zookeeper相关的api</h3><p>  由于本文中所有场景的实现都要借助于Java语言，所以这里利用apache提供的官方包加以实现。首先需要作简要介绍:</p>
-<ol>
-<li><p>ZooKeeper(String connectString, int sessionTimeout, Watcher watcher) throws IOException ：创建zookeeper实例，对zookeeper的所有操作都将依赖于该实例。<br>• connectString— zookeeper server列表, 以逗号隔开. ZooKeeper对象初始化后, 将从server列表中选择一个server, 并尝试与其建立连接. 如果连接建立失败, 则会从列表的剩余项中选择一个server, 并再次尝试建立连接. • sessionTimeout— 指定连接的超时时间. • watcher— 事件回调接口.</p>
-</li>
-<li><p>String create(String path, byte[] data, List acl, CreateMode createMode) : 创建节点<br>• path— znode的路径. • data— 与znode关联的数据. • acl— 指定权限信息, 如果不想指定权限, 可以传入Ids.OPENACLUNSAFE. • createMode— 指定znode类型. CreateMode是一个枚举类, 从中选择一个成员传入即可. 常见有以下几种模式 : PERSISTENT(创建持久化节点) PERSISTENTSEQUENTIAL(创建有序的持久化节点) EPHEMERAL(创建临时节点) EPHEMERALSEQUENTIAL(创建有序的临时节点)。所谓临时节点是指创建该节点的客户端一旦失去连接，则节点自动删除</p>
-</li>
-<li><p>List getChildren(String path, boolean watch)：获取指定节点的所有子节点<br>• watch— 参数用于指定是否监听path node的子node的增加和删除事件, 以及path node本身的删除事件.</p>
-</li>
-<li><p>Stat exists(String path, boolean watch)：检测指定节点的状态，可以绑定监控事件<br>• watch参数用于指定是否监听path node的创建, 删除事件, 以及数据更新事件. 如果该node存在, 则返回该node的状态信息, 否则返回null.</p>
-</li>
-<li><p>byte[] getData(String path, boolean watch, Stat stat)：获取指定节点上的数据<br>• watch— 参数用于指定是否监听path node的删除事件, 以及数据更新事件, 注意, 不监听path node的创建事件, 因为如果path node不存在, 该方法将抛出KeeperException.NoNodeException异常. • stat— 参数是个传出参数, getData方法会将path node的状态信息设置到该参数中.</p>
-</li>
-<li><p>Stat setData(final String path, byte data[], int version)：更新指定节点上存储的数据<br>• data— 为待更新的数据. • version— 参数指定要更新的数据的版本, 如果version和真实的版本不同, 更新操作将失败. 指定version为-1则忽略版本检查.</p>
-</li>
-<li><p>void delete(final String path, int version)：删除指定节点，可以指定删除指定版本</p>
-</li>
-</ol>
-<h3 id="典型应用场景的浅析"><a href="#典型应用场景的浅析" class="headerlink" title="典型应用场景的浅析"></a>典型应用场景的浅析</h3><h4 id="动态配置"><a href="#动态配置" class="headerlink" title="动态配置"></a><em>动态配置</em></h4><p>  由于zookeeper的节点上能够存储数据，如果客户端持续在节点上监听，也能实时地监测节点上数据的变化。借助这些特性可以利用zookeeper实现简单的远程动态配置管理。实现思路如下:</p>
-<ul>
-<li>指定zk服务端一个特定znode作为特定配置文件的存放点</li>
-<li>配置文件可以以json序列化的形式存储，也就是每个配置文件对应一个json字符串存于相应znode上</li>
-<li>客户端应用需要设置相应的监控回调watcher，一旦znode上存储的配置信息发生变更则将触发watcher,watcher中可以处理同步的逻辑。<br>代码大致如下:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line">//获取应用内配置文件的路径</span><br><span class="line">public static String getFilePath() &#123;</span><br><span class="line">    return System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/&quot; + FILENAME;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//初始化zonode</span><br><span class="line">public static void initPath(String path) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        ZooKeeper zooKeeper = getZookeeperClient();</span><br><span class="line">        Stat stat = zooKeeper.exists(path, false);</span><br><span class="line">        if (stat == null) &#123;</span><br><span class="line">            zooKeeper.create(path, path.substring(1).getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);</span><br><span class="line">        &#125;</span><br><span class="line">        zooKeeper.close();</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">        Thread.currentThread().interrupt();</span><br><span class="line">    &#125; catch (KeeperException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//同步zknode上的配置信息到应用中</span><br><span class="line">public void handleUpdate() &#123;</span><br><span class="line">    FileWriter fileWriter = null;</span><br><span class="line">    ZooKeeper zk = null;</span><br><span class="line">    try &#123;</span><br><span class="line">        zk = getZookeeperClient();</span><br><span class="line">        byte[] data = zk.getData(PROPERTIES_PATH, false, null);</span><br><span class="line">        String jsonStr = new String(data);</span><br><span class="line">        Map&lt;String, String&gt; map = JSON.parseObject(jsonStr, Map.class);</span><br><span class="line">        StringBuilder sb = new StringBuilder();</span><br><span class="line">        for (Map.Entry&lt;String, String&gt; entry : map.entrySet()) &#123;</span><br><span class="line">            sb.append(entry.getKey() + &quot;=&quot; + entry.getValue()).append(&quot;\n&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        fileWriter = new FileWriter(getFilePath());</span><br><span class="line">        fileWriter.write(sb.toString());</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">        Thread.currentThread().interrupt();</span><br><span class="line">    &#125; catch (KeeperException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            if (fileWriter != null) &#123;</span><br><span class="line">                fileWriter.close();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            LOGGER.error(e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//借助zookeeper实现简单的动态配置</span><br><span class="line">public void testAutoSetPropertiesFile() &#123;</span><br><span class="line"></span><br><span class="line">    initPath(PROPERTIES_PATH);</span><br><span class="line">    ZooKeeper zooKeeper = null;</span><br><span class="line">    final SynchronousQueue&lt;Integer&gt; queue = new SynchronousQueue&lt;Integer&gt;();</span><br><span class="line">    try &#123;</span><br><span class="line">        //注册客户端时设置对配置节点的监听器</span><br><span class="line">        zooKeeper = getZookeeperClient(new Watcher() &#123;</span><br><span class="line">            public void process(WatchedEvent watchedEvent) &#123;</span><br><span class="line">                if (watchedEvent.getType() != Event.EventType.None) &#123;</span><br><span class="line">                    LOGGER.info(&quot;配置文件发生了改变,开始同步到本地...&quot;);</span><br><span class="line">                    handleUpdate();  //监测到远程配置发生改变时进行本地同步</span><br><span class="line">                    try &#123;</span><br><span class="line">                        queue.put(1);  //同步完成后注意解锁，以重新激活监听</span><br><span class="line">                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        LOGGER.error(e.getMessage());</span><br><span class="line">                        Thread.currentThread().interrupt();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        File file = new File(getFilePath());</span><br><span class="line">        if (!file.exists()) &#123;  //本地应用第一次同步</span><br><span class="line">            handleUpdate();</span><br><span class="line">        &#125;</span><br><span class="line">        while (zooKeeper.exists(PROPERTIES_PATH, true) != null) &#123;   //通过exists方法持续激活监听器</span><br><span class="line">            queue.take();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">        Thread.currentThread().interrupt();</span><br><span class="line">    &#125; catch (KeeperException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>可以看到，最重要的是在初始化zk时绑定了用于同步配置的Watcher()，然后调用exists(path,isWatch)时设isWatch为true即可使Watcher生效。需要注意的是Watcher一旦被调用一次后即失效，所以在这里循环调用exists(path,isWatch)使Watcher重新生效以达到持续监听的效果。使用了SynchronousQueue用于在远程配置无变化时就阻塞住线程，避免无限循环。</p>
-<h4 id="集群管理"><a href="#集群管理" class="headerlink" title="集群管理"></a><em>集群管理</em></h4><p>由于zk除了能够监听znode本身的状态外也能监控其子节点的状态，所以利用这一点可以很方便地构建出一个集群模型。利用一台主机持续对集群服务的公用注册节点下的子节点进行监控，这样在公用节点下注册的服务的变动都将被主机检测到。这里为了方便地检测到服务的上下线所以服务都已临时节点的方式注册，这样只要服务一断开则相应节点被删除就可被监控到，新服务的上线同理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">    //用于集群管理的watcher</span><br><span class="line">    public class ClusterWatcher implements Watcher &#123;</span><br><span class="line"></span><br><span class="line">        ZooKeeper zooKeeper;</span><br><span class="line">        SynchronousQueue&lt;Integer&gt; lock = new SynchronousQueue&lt;Integer&gt;();</span><br><span class="line"></span><br><span class="line">        public ClusterWatcher() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                zooKeeper = getZookeeperClient();</span><br><span class="line">            &#125; catch (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //用于在监听器触发时进行相关处理</span><br><span class="line">        public void process(WatchedEvent watchedEvent) &#123;</span><br><span class="line">            if (watchedEvent.getType() == Event.EventType.NodeChildrenChanged) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    lock.put(1);</span><br><span class="line">                    synchronized (zooKeeper) &#123;</span><br><span class="line">                        int chidren_actual = zooKeeper.getChildren(CLUSTER_PATH, false).size();</span><br><span class="line">                        //服务中心节点上储存有触发器触发前集群中子节点的数量</span><br><span class="line">                        int children_before = Integer.valueOf(new String(zooKeeper.getData(</span><br><span class="line">                                CLUSTER_PATH, false, null)));</span><br><span class="line">                        zooKeeper.setData(CLUSTER_PATH, String.valueOf(chidren_actual).getBytes(), -1);</span><br><span class="line">                        //通过对比触发器触发后服务中心下的实际子节点数量和触发前的子节点数量分辨是上线还是下线行为</span><br><span class="line">                        if (chidren_actual &gt; children_before) &#123;</span><br><span class="line">                            LOGGER.info(&quot;集群中有新服务上线...&quot;);</span><br><span class="line">                        &#125; else &#123;</span><br><span class="line">                            LOGGER.info(&quot;集群中有服务下线...&quot;);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; catch (KeeperException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public void await() throws InterruptedException &#123;</span><br><span class="line">            lock.take();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">//zookeeper模拟集群管理</span><br><span class="line">    public void simulateCluster() &#123;</span><br><span class="line"></span><br><span class="line">        initPath(CLUSTER_PATH);</span><br><span class="line">        LOGGER.info(&quot;模拟集群已初始化完毕，持续监听注册的客户端状态...&quot;);</span><br><span class="line">        final SynchronousQueue&lt;Integer&gt; queue = new SynchronousQueue&lt;Integer&gt;();</span><br><span class="line">        try &#123;</span><br><span class="line">            ClusterWatcher clusterWatcher = new ClusterWatcher();</span><br><span class="line">            //初始化客户端连接时设置对中心服务节点的监听器</span><br><span class="line">            ZooKeeper zk = getZookeeperClient(clusterWatcher);</span><br><span class="line">            int serverCounts = zk.getChildren(CLUSTER_PATH, false).size();</span><br><span class="line">            //子服务每次上线时先在中心节点上存储一下当前的总的子服务的数量</span><br><span class="line">            zk.setData(CLUSTER_PATH, String.valueOf(serverCounts).getBytes(), -1);</span><br><span class="line">            //通过循环调用getChildren持续激活监听器</span><br><span class="line">            while (zk.getChildren(CLUSTER_PATH, true) != null) &#123; </span><br><span class="line">                clusterWatcher.await();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            LOGGER.error(e.getMessage());</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            LOGGER.error(e.getMessage());</span><br><span class="line">            Thread.currentThread().interrupt();</span><br><span class="line">        &#125; catch (KeeperException e) &#123;</span><br><span class="line">            LOGGER.error(e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>关键点还是持续监控上，由于每次父节点下的子节点变动触发watcher后就会导致watcher失效。所以还是要在watcher每次被调用后立即重新让它生效，所以上面循环调用zk.getChildren(CLUSTER_PATH,true)。而且上面对服务的上下线的判断依赖于父节点始终存储着子节点变动前的子节点总数，子节点一旦变化则在watcher中将其与实时的子节点总数作对比。其实这里只是浅层次地实现了对集群中服务的在线状态实行监控，对集群的管理远不止这些，包括集群中leader的动态选择，这些大家可以自己去尝试，也比较简单。测试代码就不贴了，就是异步添加和删除多个临时节点的过程。</p>
-<h4 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a><em>分布式锁</em></h4><p>利用zk实现分布式锁也是依赖于znode，加锁解锁往往依赖于节点的创建删除。具体思路如下：</p>
-<ul>
-<li>建立一个父节点base_node</li>
-<li>每当有应用要获取一个锁时则先到base_node下创建一个有序的临时节点</li>
-<li>获取base_node 所有子节点集合并排序选出其中最小的节点，将其与2中创建的节点进行对比，判断最小的节点是不是2创建的节点</li>
-<li>如果3判断最小的节点即是2创建的节点则获取锁成功，可以继续去处理加锁的业务；否则获取锁失败，可以阻塞住等待最小的节点离线，即其它应用解锁。</li>
-<li>处理完业务后通过删除节点达到解锁的效果。 分析上面的思路可以发现，一旦一个刚创建的节点是最小的节点则加锁成功，这时如果外部有新的节点建立，由于是有序节点则新建立的节点肯定比当前存在的锁节点大，只能等待锁节点的删除才能成为最小的节点。<br>关键代码如下:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">//zookeeper实现分布式锁</span><br><span class="line">public void simulateLock() &#123;</span><br><span class="line"></span><br><span class="line">    initPath(LOCK_PATH);</span><br><span class="line">    try &#123;</span><br><span class="line">        ZooKeeper zk = getZookeeperClient();</span><br><span class="line">        long currentTime = System.currentTimeMillis();</span><br><span class="line">        String newNode = zk.create(LOCK_PATH + &quot;/&quot; + currentTime, String.valueOf(currentTime).getBytes(),</span><br><span class="line">                ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);  //创建锁节点</span><br><span class="line"></span><br><span class="line">        List&lt;String&gt; list = zk.getChildren(LOCK_PATH, false);</span><br><span class="line">        String[] nodes = list.toArray(new String[list.size()]);</span><br><span class="line">        Arrays.sort(nodes);</span><br><span class="line">        if (newNode.equals(LOCK_PATH + &quot;/&quot; + nodes[0])) &#123;  //与zk中最小的锁节点比较，相同则获取锁成功</span><br><span class="line">            LOGGER.info(&quot;获取锁成功&quot;);</span><br><span class="line">            Thread.sleep(5000);</span><br><span class="line">            zk.close();    //由于创建的锁节点是临时节点，所以客户端退出即删除相应节点</span><br><span class="line">            lock_wait.put(1);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            LOGGER.info(&quot;获取锁失败，持续等待&quot;);</span><br><span class="line">            lock_wait.take();</span><br><span class="line">            zk.close();   //退出客户端以删除获取锁失败时创建的节点</span><br><span class="line">            simulateLock();  //尝试重新获取锁</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125; catch (KeeperException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">        Thread.currentThread().interrupt();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>需要注意的是lockwait是已经声明的一个静态的SynchronousQueue，一旦线程获取锁失败则通过lockwait.take()阻塞住，一旦线程释放锁完成则通过lock.wait.put()唤醒其它获取锁陷入阻塞的线程，之后这些线程可以重试锁。</p>
-<h4 id="分布式阻塞队列"><a href="#分布式阻塞队列" class="headerlink" title="分布式阻塞队列"></a><em>分布式阻塞队列</em></h4><p>这里实现一个分布式的生产者-消费者模型的阻塞队列。原理比较简单，如下简述:</p>
-<ul>
-<li>建立一个队列的父节点，队列中的元素都将存储于其子节点中，入队则是新建子节点，出队则是删除子节点。</li>
-<li>创建的子节点都是有序节点，这样保证队列中元素的有序性。</li>
-<li>当入队时先检测当前父节点下的子节点数是否已经超出队列的最大容量，如果是则阻塞住等待元素的出队。出队时先检测父节点的子节点集是否为空，如果是则阻塞住等待元素的入队。<br>关键代码如下:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">//用于分布式队列的监听器</span><br><span class="line">public class QueueWatcher implements Watcher &#123;</span><br><span class="line"></span><br><span class="line">    CountDownLatch latch;</span><br><span class="line"></span><br><span class="line">    public QueueWatcher() &#123;</span><br><span class="line">        latch = new CountDownLatch(1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void process(WatchedEvent watchedEvent) &#123;</span><br><span class="line">        if (watchedEvent.getType() == Event.EventType.NodeChildrenChanged) &#123;</span><br><span class="line">            LOGGER.info(&quot;队列成员发生变更...&quot;);</span><br><span class="line">            latch.countDown();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void await() throws InterruptedException &#123;</span><br><span class="line">        latch.await();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//zookeeper实现阻塞队列的生产者</span><br><span class="line">public void simulateProducer() &#123;</span><br><span class="line"></span><br><span class="line">    initPath(QUEUE_PATH);</span><br><span class="line">    try &#123;</span><br><span class="line">        ZooKeeper zk = getZookeeperClient();</span><br><span class="line">        while (zk.exists(QUEUE_PATH, false) != null) &#123;</span><br><span class="line">            QueueWatcher watcher = new QueueWatcher();</span><br><span class="line">            //队列中元素超过上限时通过监听器中的锁阻塞</span><br><span class="line">            if (zk.getChildren(QUEUE_PATH, watcher).size() &gt;= queueSize) &#123;</span><br><span class="line">                LOGGER.info(&quot;由于队列已满，进入阻塞状态...&quot;);</span><br><span class="line">                watcher.await();</span><br><span class="line">            &#125;</span><br><span class="line">            //新元素入队</span><br><span class="line">            zk.create(QUEUE_PATH + &quot;/elem-&quot;, String.valueOf(System.currentTimeMillis()).getBytes(),</span><br><span class="line">                    ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125; catch (KeeperException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//zookeeper实现阻塞队列的消费者</span><br><span class="line">public void simulateCustomer() &#123;</span><br><span class="line"></span><br><span class="line">    initPath(QUEUE_PATH);</span><br><span class="line">    try &#123;</span><br><span class="line">        ZooKeeper zk = getZookeeperClient();</span><br><span class="line">        while (zk.exists(QUEUE_PATH, false) != null) &#123;</span><br><span class="line">            QueueWatcher watcher = new QueueWatcher();</span><br><span class="line">            List&lt;String&gt; nodes = zk.getChildren(QUEUE_PATH, watcher);</span><br><span class="line">            //队列为空时阻塞</span><br><span class="line">            if (nodes.isEmpty()) &#123;</span><br><span class="line">                LOGGER.info(&quot;由于队列已空，消费者线程进入阻塞状态...&quot;);</span><br><span class="line">                watcher.await();</span><br><span class="line">                continue;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                //每次从队列中出队最小的元素</span><br><span class="line">                String[] products = nodes.toArray(new String[nodes.size()]);</span><br><span class="line">                Arrays.sort(products);</span><br><span class="line">                String path = QUEUE_PATH + &quot;/&quot; + products[0];</span><br><span class="line">                LOGGER.info(&quot;模拟处理队列&#123;&#125;中的&#123;&#125;元素对应的数据&quot;, QUEUE_PATH, path);</span><br><span class="line">                Thread.sleep(5000);</span><br><span class="line">                zk.delete(path, -1);</span><br><span class="line">                LOGGER.info(&quot;处理完后从队列&#123;&#125;移除元素&#123;&#125;&quot;, QUEUE_PATH, path);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125; catch (KeeperException e) &#123;</span><br><span class="line">        LOGGER.error(e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      
-        
-    </entry>
+  </div>
+  
     
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/12/24/JAVA-oncurrent包学习总结/">JAVA oncurrent包学习总结</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">smartcong007</a></p>
+        <p><span>发布时间:</span>2017-12-24, 17:26:03</p>
+        <p><span>最后更新:</span>2017-12-24, 21:39:15</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/12/24/JAVA-oncurrent包学习总结/" title="JAVA oncurrent包学习总结">http://yoursite.com/2017/12/24/JAVA-oncurrent包学习总结/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/12/24/JAVA-oncurrent包学习总结/　　作者: smartcong007" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/12/20/浅析zookeeper的典型应用场景/">
+                    浅析zookeeper的典型应用场景
+                </a>
+            </div>
+        
+    </nav>
+
   
-  
-</search>
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#阻塞队列"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x963B;&#x585E;&#x961F;&#x5217;" class="headerlink" title="&#x963B;&#x585E;&#x961F;&#x5217;"></a>&#x963B;&#x585E;&#x961F;&#x5217;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ArrayBlockingQueue"><span class="toc-number">1.0.1.</span> <span class="toc-text"><a href="#ArrayBlockingQueue" class="headerlink" title="ArrayBlockingQueue"></a>ArrayBlockingQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DelayQueue"><span class="toc-number">1.0.2.</span> <span class="toc-text"><a href="#DelayQueue" class="headerlink" title="DelayQueue"></a>DelayQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LinkedBlockingQueue"><span class="toc-number">1.0.3.</span> <span class="toc-text"><a href="#LinkedBlockingQueue" class="headerlink" title="LinkedBlockingQueue"></a>LinkedBlockingQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PriorityBlockingQueue"><span class="toc-number">1.0.4.</span> <span class="toc-text"><a href="#PriorityBlockingQueue" class="headerlink" title="PriorityBlockingQueue"></a>PriorityBlockingQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SynchronousQueue"><span class="toc-number">1.0.5.</span> <span class="toc-text"><a href="#SynchronousQueue" class="headerlink" title="SynchronousQueue"></a>SynchronousQueue</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#双端阻塞队列-BlockingDeque"><span class="toc-number">2.</span> <span class="toc-text"><a href="#&#x53CC;&#x7AEF;&#x963B;&#x585E;&#x961F;&#x5217;-BlockingDeque" class="headerlink" title="&#x53CC;&#x7AEF;&#x963B;&#x585E;&#x961F;&#x5217;(BlockingDeque)"></a>&#x53CC;&#x7AEF;&#x963B;&#x585E;&#x961F;&#x5217;(BlockingDeque)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#并发集合"><span class="toc-number">3.</span> <span class="toc-text"><a href="#&#x5E76;&#x53D1;&#x96C6;&#x5408;" class="headerlink" title="&#x5E76;&#x53D1;&#x96C6;&#x5408;"></a>&#x5E76;&#x53D1;&#x96C6;&#x5408;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#headMap"><span class="toc-number">3.0.1.</span> <span class="toc-text"><a href="#headMap" class="headerlink" title="headMap()"></a>headMap()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tailMap"><span class="toc-number">3.0.2.</span> <span class="toc-text"><a href="#tailMap" class="headerlink" title="tailMap()"></a>tailMap()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#subMap"><span class="toc-number">3.0.3.</span> <span class="toc-text"><a href="#subMap" class="headerlink" title="subMap()"></a>subMap()</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见并发工具"><span class="toc-number">4.</span> <span class="toc-text"><a href="#&#x5E38;&#x89C1;&#x5E76;&#x53D1;&#x5DE5;&#x5177;" class="headerlink" title="&#x5E38;&#x89C1;&#x5E76;&#x53D1;&#x5DE5;&#x5177;"></a>&#x5E38;&#x89C1;&#x5E76;&#x53D1;&#x5DE5;&#x5177;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CountDownLatch（闭锁）"><span class="toc-number">4.1.</span> <span class="toc-text"><a href="#CountDownLatch&#xFF08;&#x95ED;&#x9501;&#xFF09;" class="headerlink" title="CountDownLatch&#xFF08;&#x95ED;&#x9501;&#xFF09;"></a>CountDownLatch&#xFF08;&#x95ED;&#x9501;&#xFF09;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CyclicBarrier（栅栏）"><span class="toc-number">4.2.</span> <span class="toc-text"><a href="#CyclicBarrier&#xFF08;&#x6805;&#x680F;&#xFF09;" class="headerlink" title="CyclicBarrier&#xFF08;&#x6805;&#x680F;&#xFF09;"></a>CyclicBarrier&#xFF08;&#x6805;&#x680F;&#xFF09;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Exchanger-交换机"><span class="toc-number">4.3.</span> <span class="toc-text"><a href="#Exchanger-&#x4EA4;&#x6362;&#x673A;" class="headerlink" title="Exchanger(&#x4EA4;&#x6362;&#x673A;)"></a>Exchanger(&#x4EA4;&#x6362;&#x673A;)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Semaphore-信号量"><span class="toc-number">4.4.</span> <span class="toc-text"><a href="#Semaphore-&#x4FE1;&#x53F7;&#x91CF;" class="headerlink" title="Semaphore(&#x4FE1;&#x53F7;&#x91CF;)"></a>Semaphore(&#x4FE1;&#x53F7;&#x91CF;)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ExecutorService-执行器服务"><span class="toc-number">4.5.</span> <span class="toc-text"><a href="#ExecutorService-&#x6267;&#x884C;&#x5668;&#x670D;&#x52A1;" class="headerlink" title="ExecutorService(&#x6267;&#x884C;&#x5668;&#x670D;&#x52A1;)"></a>ExecutorService(&#x6267;&#x884C;&#x5668;&#x670D;&#x52A1;)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ForkJoinPool（分叉合并池执行池）"><span class="toc-number">4.6.</span> <span class="toc-text"><a href="#ForkJoinPool&#xFF08;&#x5206;&#x53C9;&#x5408;&#x5E76;&#x6C60;&#x6267;&#x884C;&#x6C60;&#xFF09;" class="headerlink" title="ForkJoinPool&#xFF08;&#x5206;&#x53C9;&#x5408;&#x5E76;&#x6C60;&#x6267;&#x884C;&#x6C60;&#xFF09;"></a>ForkJoinPool&#xFF08;&#x5206;&#x53C9;&#x5408;&#x5E76;&#x6C60;&#x6267;&#x884C;&#x6C60;&#xFF09;</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+
+    
+        <div class="addthis_sharing_toolbox"></div>
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/12/20/浅析zookeeper的典型应用场景/" title="下一篇: 浅析zookeeper的典型应用场景">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/12/24/JAVA-oncurrent包学习总结/">JAVA oncurrent包学习总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/20/浅析zookeeper的典型应用场景/">浅析zookeeper的典型应用场景</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 smartcong007
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "(つェ⊂) 我藏好了哦~ " + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*) 被你发现啦~ " + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
