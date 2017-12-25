@@ -26,7 +26,7 @@
 <meta property="og:image" content="http://incdn1.b0.upaiyun.com/2017/09/a87d1272cf9d2e199a8c2522747a0651.png">
 <meta property="og:image" content="http://incdn1.b0.upaiyun.com/2017/09/411d4e8c8ae237bdd6fc22469d1c1880.png">
 <meta property="og:image" content="http://www.importnew.com/26461.html/5401760-d3f822dbc4045bb9">
-<meta property="og:updated_time" content="2017-12-24T13:39:15.346Z">
+<meta property="og:updated_time" content="2017-12-25T02:02:25.821Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JAVA oncurrent包学习总结">
 <meta name="twitter:description" content="concurrent包是java中专门用来处理并发的包，并发编程的基础便是对这个包下的常用api的熟练使用。由于并发场景的复杂和多样性，常常会有很多不同的并发手段。此文对常见的并发api进行梳理。">
@@ -153,13 +153,13 @@
                 <div class="tips-box hide">
                     <div class="tips-arrow"></div>
                     <ul class="tips-inner">
-                        <li>菜单</li>
-                        <li>标签</li>
+                        <li>Menu</li>
+                        <li>Tags</li>
                         
-                        <li>友情链接</li>
+                        <li>Friends</li>
                         
                         
-                        <li>关于我</li>
+                        <li>About Me</li>
                         
                     </ul>
                 </div>
@@ -275,7 +275,7 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
       <div class="body-wrap"><article id="post-JAVA-oncurrent包学习总结" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -480,6 +480,33 @@
 <p><strong><em>RecursiveTask</em></strong><br>RecursiveTask 是一种会返回结果的任务。它可以将自己的工作分割为若干更小任务，并将这些子任务的执行结果合并到一个集体结果。可以有几个水平的分割和合并。以下是一个 RecursiveTask 示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class MyRecursiveTask extends RecursiveTask&lt;Long&gt;</span><br><span class="line"></span><br><span class="line">    &#123;  </span><br><span class="line">        private long workLoad = 0;  </span><br><span class="line">	    public MyRecursiveTask(long workLoad)&#123;  </span><br><span class="line">	        this.workLoad = workLoad;  </span><br><span class="line">	    &#125;  </span><br><span class="line">	    protected Long compute () &#123;  </span><br><span class="line">	        </span><br><span class="line">	        if (this.workLoad &gt; 16)&#123;  </span><br><span class="line">	            System.out.println(&quot;Splitting workLoad : &quot;  + this.workLoad);  </span><br><span class="line">	            List&lt;MyRecursiveTask&gt; subtasks =  </span><br><span class="line">	                new ArrayList&lt;MyRecursiveTask&gt; ();  </span><br><span class="line">	            subtasks.addAll(createSubtasks());  </span><br><span class="line">	            for (MyRecursiveTask subtask : subtasks) &#123;  </span><br><span class="line">	                subtask.fork();  </span><br><span class="line">	            &#125;  </span><br><span class="line">	            long result = 0;  </span><br><span class="line">	            for (MyRecursiveTask subtask : subtasks) &#123;  </span><br><span class="line">	                result += subtask.join();  </span><br><span class="line">	            &#125;  </span><br><span class="line">	            return result;  </span><br><span class="line">	        &#125; else &#123;  </span><br><span class="line">	            System.out.println(&quot;Doing workLoad myself: &quot;  + this.workLoad);  </span><br><span class="line">	            return workLoad * 3;  </span><br><span class="line">	        &#125;  </span><br><span class="line">	    &#125;  </span><br><span class="line">	    private List&lt;MyRecursiveTask&gt; createSubtasks () &#123;  </span><br><span class="line">	        List&lt;MyRecursiveTask&gt; subtasks =  </span><br><span class="line">	        new ArrayList&lt;MyRecursiveTask&gt; ();  </span><br><span class="line">	        MyRecursiveTask subtask1 = new MyRecursiveTask(this.workLoad / 2);  </span><br><span class="line">	        MyRecursiveTask subtask2 = new MyRecursiveTask(this.workLoad / 2);  </span><br><span class="line">	        subtasks.add(subtask1);  </span><br><span class="line">	        subtasks.add(subtask2);  </span><br><span class="line">	        return subtasks;  </span><br><span class="line">	    &#125;  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <p>除了有一个结果返回之外，这个示例和 RecursiveAction 的例子很像。MyRecursiveTask 类继承自 RecursiveTask<long>，这也就意味着它将返回一个 Long 类型的结果。MyRecursiveTask 示例也会将工作分割为子任务，并通过 fork() 方法对这些子任务计划执行。此外，本示例还通过调用每个子任务的 join() 方法收集它们返回的结果。子任务的结果随后被合并到一个更大的结果，并最终将其返回。对于不同级别的递归，这种子任务的结果合并可能会发生递归。</long></p>
 <p>你可以这样规划一个 RecursiveTask：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MyRecursiveTask myRecursiveTask = new MyRecursiveTask(128);  </span><br><span class="line">long mergedResult = forkJoinPool.invoke(myRecursiveTask);  </span><br><span class="line">System.out.println(&quot;mergedResult = &quot; + mergedResult);</span><br></pre></td></tr></table></figure></p>
+<h3 id="Lock"><a href="#Lock" class="headerlink" title="Lock"></a>Lock</h3><p>java.util.concurrent.locks.Lock 是一个类似于 synchronized 块的线程同步机制。但是 Lock 比 synchronized 块更加灵活、精细。java.util.concurrent.locks中提供了lock的实现ReentrantLock。</p>
+<p><strong><em>Lock 和 synchronized 代码块的主要不同点</em></strong><br>一个 Lock 对象和一个 synchronized 代码块之间的主要不同点是：</p>
+<ul>
+<li>synchronized 代码块不能够保证进入访问等待的线程的先后顺序</li>
+<li>你不能够传递任何参数给一个 synchronized 代码块的入口。因此，对于 synchronized 代码块的访问等待设置超时时间是不可能的事情。</li>
+<li>synchronized 块必须被完整地包含在单个方法里。而一个 Lock 对象可以把它的 lock() 和 unlock() 方法的调用放在不同的方法里。</li>
+</ul>
+<p>Lock 接口具有以下主要方法：</p>
+<ul>
+<li>lock()：将lock实例锁定，如果lock实例已被其他线程锁定则该方法阻塞，直到lock实例被解锁</li>
+<li>lockInterruptibly()：锁定lock实例，除非该线程被打断。如果一旦因Lock实例已被锁定而进入阻塞，则如果它被外部打断则退出该方法的调用。</li>
+<li>tryLock()：以永不阻塞的方式尝试锁定lock实例，若锁定成功立即返回true,否则若lock实例已被锁定立即返回false</li>
+<li>tryLock(long timeout, TimeUnit timeUnit)：与tryLock()类似，只是它能指定在放弃锁定之前的最长等待时间。</li>
+<li>unlock()：解锁lock实例，只允许锁定相应lock实例的线程调用该方法，否则抛出一个未检查异常。</li>
+</ul>
+<p><strong><em>ReentrantLock</em></strong></p>
+<p>lock的基本实现，使用简单：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Lock lock = new ReentrantLock();  </span><br><span class="line">…….</span><br><span class="line">lock.lock();  </span><br><span class="line">…….</span><br><span class="line">…….</span><br><span class="line">lock.unlock();</span><br></pre></td></tr></table></figure></p>
+<p><strong><em>ReadWriteLock</em></strong></p>
+<p>java.util.concurrent.locks.ReadWriteLock 读写锁是一种先进的线程锁机制。它能够允许多个线程在同一时间对某特定资源进行读取，但同一时间内只能有一个线程对其进行写入。</p>
+<p>读写锁的理念在于多个线程能够对一个共享资源进行读取，而不会导致并发问题。并发问题的发生场景在于对一个共享资源的读和写操作的同时进行，或者多个写操作并发进行。</p>
+<p>ReadWriteLock 锁规则</p>
+<p>一个线程在对受保护资源在读或者写之前对 ReadWriteLock 锁定的规则如下：</p>
+<ul>
+<li><strong><em>读锁</em></strong>：如果没有任何写操作线程锁定 ReadWriteLock，并且没有任何写操作线程要求一个写锁(但还没有获得该锁)。因此，可以有多个读操作线程对该锁进行锁定。</li>
+<li><strong><em>写锁</em></strong>：如果没有任何读操作或者写操作。因此，在写操作的时候，只能有一个线程对该锁进行锁定。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();</span><br><span class="line">reentrantReadWriteLock.readLock().lock();</span><br><span class="line"> …..</span><br><span class="line"> </span><br><span class="line">reentrantReadWriteLock.readLock().unlock();</span><br><span class="line"> </span><br><span class="line">reentrantReadWriteLock.writeLock().lock();</span><br><span class="line"> …….</span><br><span class="line"> </span><br><span class="line">reentrantReadWriteLock.writeLock().unlock();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 
       
     </div>
@@ -488,17 +515,17 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/12/24/JAVA-oncurrent包学习总结/">JAVA oncurrent包学习总结</a></p>
-        <p><span>文章作者:</span><a href="/" title="回到主页">smartcong007</a></p>
-        <p><span>发布时间:</span>2017-12-24, 17:26:03</p>
-        <p><span>最后更新:</span>2017-12-24, 21:39:15</p>
+        <p><span>Title:</span><a href="/2017/12/24/JAVA-oncurrent包学习总结/">JAVA oncurrent包学习总结</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">smartcong007</a></p>
+        <p><span>Created:</span>2017-12-24, 17:26:03</p>
+        <p><span>Updated:</span>2017-12-25, 10:02:25</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/12/24/JAVA-oncurrent包学习总结/" title="JAVA oncurrent包学习总结">http://yoursite.com/2017/12/24/JAVA-oncurrent包学习总结/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/12/24/JAVA-oncurrent包学习总结/　　作者: smartcong007" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2017/12/24/JAVA-oncurrent包学习总结/" title="JAVA oncurrent包学习总结">http://yoursite.com/2017/12/24/JAVA-oncurrent包学习总结/</a>
+            <span class="copy-path" data-clipboard-text="From http://yoursite.com/2017/12/24/JAVA-oncurrent包学习总结/　　By smartcong007" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
         </p>
     </div>
 
@@ -519,9 +546,9 @@
 </article>
 
     <div id="toc" class="toc-article">
-        <strong class="toc-title">文章目录</strong>
+        <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#阻塞队列"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x963B;&#x585E;&#x961F;&#x5217;" class="headerlink" title="&#x963B;&#x585E;&#x961F;&#x5217;"></a>&#x963B;&#x585E;&#x961F;&#x5217;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ArrayBlockingQueue"><span class="toc-number">1.0.1.</span> <span class="toc-text"><a href="#ArrayBlockingQueue" class="headerlink" title="ArrayBlockingQueue"></a>ArrayBlockingQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DelayQueue"><span class="toc-number">1.0.2.</span> <span class="toc-text"><a href="#DelayQueue" class="headerlink" title="DelayQueue"></a>DelayQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LinkedBlockingQueue"><span class="toc-number">1.0.3.</span> <span class="toc-text"><a href="#LinkedBlockingQueue" class="headerlink" title="LinkedBlockingQueue"></a>LinkedBlockingQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PriorityBlockingQueue"><span class="toc-number">1.0.4.</span> <span class="toc-text"><a href="#PriorityBlockingQueue" class="headerlink" title="PriorityBlockingQueue"></a>PriorityBlockingQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SynchronousQueue"><span class="toc-number">1.0.5.</span> <span class="toc-text"><a href="#SynchronousQueue" class="headerlink" title="SynchronousQueue"></a>SynchronousQueue</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#双端阻塞队列-BlockingDeque"><span class="toc-number">2.</span> <span class="toc-text"><a href="#&#x53CC;&#x7AEF;&#x963B;&#x585E;&#x961F;&#x5217;-BlockingDeque" class="headerlink" title="&#x53CC;&#x7AEF;&#x963B;&#x585E;&#x961F;&#x5217;(BlockingDeque)"></a>&#x53CC;&#x7AEF;&#x963B;&#x585E;&#x961F;&#x5217;(BlockingDeque)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#并发集合"><span class="toc-number">3.</span> <span class="toc-text"><a href="#&#x5E76;&#x53D1;&#x96C6;&#x5408;" class="headerlink" title="&#x5E76;&#x53D1;&#x96C6;&#x5408;"></a>&#x5E76;&#x53D1;&#x96C6;&#x5408;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#headMap"><span class="toc-number">3.0.1.</span> <span class="toc-text"><a href="#headMap" class="headerlink" title="headMap()"></a>headMap()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tailMap"><span class="toc-number">3.0.2.</span> <span class="toc-text"><a href="#tailMap" class="headerlink" title="tailMap()"></a>tailMap()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#subMap"><span class="toc-number">3.0.3.</span> <span class="toc-text"><a href="#subMap" class="headerlink" title="subMap()"></a>subMap()</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见并发工具"><span class="toc-number">4.</span> <span class="toc-text"><a href="#&#x5E38;&#x89C1;&#x5E76;&#x53D1;&#x5DE5;&#x5177;" class="headerlink" title="&#x5E38;&#x89C1;&#x5E76;&#x53D1;&#x5DE5;&#x5177;"></a>&#x5E38;&#x89C1;&#x5E76;&#x53D1;&#x5DE5;&#x5177;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CountDownLatch（闭锁）"><span class="toc-number">4.1.</span> <span class="toc-text"><a href="#CountDownLatch&#xFF08;&#x95ED;&#x9501;&#xFF09;" class="headerlink" title="CountDownLatch&#xFF08;&#x95ED;&#x9501;&#xFF09;"></a>CountDownLatch&#xFF08;&#x95ED;&#x9501;&#xFF09;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CyclicBarrier（栅栏）"><span class="toc-number">4.2.</span> <span class="toc-text"><a href="#CyclicBarrier&#xFF08;&#x6805;&#x680F;&#xFF09;" class="headerlink" title="CyclicBarrier&#xFF08;&#x6805;&#x680F;&#xFF09;"></a>CyclicBarrier&#xFF08;&#x6805;&#x680F;&#xFF09;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Exchanger-交换机"><span class="toc-number">4.3.</span> <span class="toc-text"><a href="#Exchanger-&#x4EA4;&#x6362;&#x673A;" class="headerlink" title="Exchanger(&#x4EA4;&#x6362;&#x673A;)"></a>Exchanger(&#x4EA4;&#x6362;&#x673A;)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Semaphore-信号量"><span class="toc-number">4.4.</span> <span class="toc-text"><a href="#Semaphore-&#x4FE1;&#x53F7;&#x91CF;" class="headerlink" title="Semaphore(&#x4FE1;&#x53F7;&#x91CF;)"></a>Semaphore(&#x4FE1;&#x53F7;&#x91CF;)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ExecutorService-执行器服务"><span class="toc-number">4.5.</span> <span class="toc-text"><a href="#ExecutorService-&#x6267;&#x884C;&#x5668;&#x670D;&#x52A1;" class="headerlink" title="ExecutorService(&#x6267;&#x884C;&#x5668;&#x670D;&#x52A1;)"></a>ExecutorService(&#x6267;&#x884C;&#x5668;&#x670D;&#x52A1;)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ForkJoinPool（分叉合并池执行池）"><span class="toc-number">4.6.</span> <span class="toc-text"><a href="#ForkJoinPool&#xFF08;&#x5206;&#x53C9;&#x5408;&#x5E76;&#x6C60;&#x6267;&#x884C;&#x6C60;&#xFF09;" class="headerlink" title="ForkJoinPool&#xFF08;&#x5206;&#x53C9;&#x5408;&#x5E76;&#x6C60;&#x6267;&#x884C;&#x6C60;&#xFF09;"></a>ForkJoinPool&#xFF08;&#x5206;&#x53C9;&#x5408;&#x5E76;&#x6C60;&#x6267;&#x884C;&#x6C60;&#xFF09;</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#阻塞队列"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x963B;&#x585E;&#x961F;&#x5217;" class="headerlink" title="&#x963B;&#x585E;&#x961F;&#x5217;"></a>&#x963B;&#x585E;&#x961F;&#x5217;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ArrayBlockingQueue"><span class="toc-number">1.0.1.</span> <span class="toc-text"><a href="#ArrayBlockingQueue" class="headerlink" title="ArrayBlockingQueue"></a>ArrayBlockingQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DelayQueue"><span class="toc-number">1.0.2.</span> <span class="toc-text"><a href="#DelayQueue" class="headerlink" title="DelayQueue"></a>DelayQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LinkedBlockingQueue"><span class="toc-number">1.0.3.</span> <span class="toc-text"><a href="#LinkedBlockingQueue" class="headerlink" title="LinkedBlockingQueue"></a>LinkedBlockingQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PriorityBlockingQueue"><span class="toc-number">1.0.4.</span> <span class="toc-text"><a href="#PriorityBlockingQueue" class="headerlink" title="PriorityBlockingQueue"></a>PriorityBlockingQueue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SynchronousQueue"><span class="toc-number">1.0.5.</span> <span class="toc-text"><a href="#SynchronousQueue" class="headerlink" title="SynchronousQueue"></a>SynchronousQueue</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#双端阻塞队列-BlockingDeque"><span class="toc-number">2.</span> <span class="toc-text"><a href="#&#x53CC;&#x7AEF;&#x963B;&#x585E;&#x961F;&#x5217;-BlockingDeque" class="headerlink" title="&#x53CC;&#x7AEF;&#x963B;&#x585E;&#x961F;&#x5217;(BlockingDeque)"></a>&#x53CC;&#x7AEF;&#x963B;&#x585E;&#x961F;&#x5217;(BlockingDeque)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#并发集合"><span class="toc-number">3.</span> <span class="toc-text"><a href="#&#x5E76;&#x53D1;&#x96C6;&#x5408;" class="headerlink" title="&#x5E76;&#x53D1;&#x96C6;&#x5408;"></a>&#x5E76;&#x53D1;&#x96C6;&#x5408;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#headMap"><span class="toc-number">3.0.1.</span> <span class="toc-text"><a href="#headMap" class="headerlink" title="headMap()"></a>headMap()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tailMap"><span class="toc-number">3.0.2.</span> <span class="toc-text"><a href="#tailMap" class="headerlink" title="tailMap()"></a>tailMap()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#subMap"><span class="toc-number">3.0.3.</span> <span class="toc-text"><a href="#subMap" class="headerlink" title="subMap()"></a>subMap()</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见并发工具"><span class="toc-number">4.</span> <span class="toc-text"><a href="#&#x5E38;&#x89C1;&#x5E76;&#x53D1;&#x5DE5;&#x5177;" class="headerlink" title="&#x5E38;&#x89C1;&#x5E76;&#x53D1;&#x5DE5;&#x5177;"></a>&#x5E38;&#x89C1;&#x5E76;&#x53D1;&#x5DE5;&#x5177;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CountDownLatch（闭锁）"><span class="toc-number">4.1.</span> <span class="toc-text"><a href="#CountDownLatch&#xFF08;&#x95ED;&#x9501;&#xFF09;" class="headerlink" title="CountDownLatch&#xFF08;&#x95ED;&#x9501;&#xFF09;"></a>CountDownLatch&#xFF08;&#x95ED;&#x9501;&#xFF09;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CyclicBarrier（栅栏）"><span class="toc-number">4.2.</span> <span class="toc-text"><a href="#CyclicBarrier&#xFF08;&#x6805;&#x680F;&#xFF09;" class="headerlink" title="CyclicBarrier&#xFF08;&#x6805;&#x680F;&#xFF09;"></a>CyclicBarrier&#xFF08;&#x6805;&#x680F;&#xFF09;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Exchanger-交换机"><span class="toc-number">4.3.</span> <span class="toc-text"><a href="#Exchanger-&#x4EA4;&#x6362;&#x673A;" class="headerlink" title="Exchanger(&#x4EA4;&#x6362;&#x673A;)"></a>Exchanger(&#x4EA4;&#x6362;&#x673A;)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Semaphore-信号量"><span class="toc-number">4.4.</span> <span class="toc-text"><a href="#Semaphore-&#x4FE1;&#x53F7;&#x91CF;" class="headerlink" title="Semaphore(&#x4FE1;&#x53F7;&#x91CF;)"></a>Semaphore(&#x4FE1;&#x53F7;&#x91CF;)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ExecutorService-执行器服务"><span class="toc-number">4.5.</span> <span class="toc-text"><a href="#ExecutorService-&#x6267;&#x884C;&#x5668;&#x670D;&#x52A1;" class="headerlink" title="ExecutorService(&#x6267;&#x884C;&#x5668;&#x670D;&#x52A1;)"></a>ExecutorService(&#x6267;&#x884C;&#x5668;&#x670D;&#x52A1;)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ForkJoinPool（分叉合并池执行池）"><span class="toc-number">4.6.</span> <span class="toc-text"><a href="#ForkJoinPool&#xFF08;&#x5206;&#x53C9;&#x5408;&#x5E76;&#x6C60;&#x6267;&#x884C;&#x6C60;&#xFF09;" class="headerlink" title="ForkJoinPool&#xFF08;&#x5206;&#x53C9;&#x5408;&#x5E76;&#x6C60;&#x6267;&#x884C;&#x6C60;&#xFF09;"></a>ForkJoinPool&#xFF08;&#x5206;&#x53C9;&#x5408;&#x5E76;&#x6C60;&#x6267;&#x884C;&#x6C60;&#xFF09;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lock"><span class="toc-number">4.7.</span> <span class="toc-text"><a href="#Lock" class="headerlink" title="Lock"></a>Lock</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -535,10 +562,10 @@
         }
     </style>
 
-    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
 
     <script>
-        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
     </script>
 
 
@@ -565,13 +592,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
-        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/12/20/浅析zookeeper的典型应用场景/" title="下一篇: 浅析zookeeper的典型应用场景">
+            <a href="/2017/12/20/浅析zookeeper的典型应用场景/" title="Next: 浅析zookeeper的典型应用场景">
                 <i class="fa fa-angle-right"></i>
             </a>
         
@@ -594,14 +621,14 @@
                 2016-2017 smartcong007
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
                 
@@ -610,7 +637,7 @@
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
                 
@@ -664,9 +691,9 @@ MathJax.Hub.Queue(function() {
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window
